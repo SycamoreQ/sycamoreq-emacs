@@ -104,7 +104,7 @@ Press `SPC` in normal mode (or `M-SPC` anywhere) to access the leader menu:
 mv ~/.emacs.d ~/.emacs.d.bak
 
 # Clone repository
-git clone https://github.com/SycamoreQ/sycamore-emacs.git ~/.emacs.d
+git clone https://github.com/SycamoreQ/sycamoreq-emacs.git ~/.emacs.d
 
 # Launch Emacs (packages will automatically bootstrap on first run)
 emacs
