@@ -97,7 +97,7 @@ Press `SPC` in normal mode (or `M-SPC` anywhere) to access the leader menu:
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ```bash
 # Backup existing config if present
