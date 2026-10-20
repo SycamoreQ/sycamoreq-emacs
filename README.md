@@ -1,6 +1,7 @@
 # SycamoreQ's Emacs — The Black Swordsman Edition
 
 ![Front View](assets/screenshot.png)
+![Blog View](assets/blog.png)
 
 A minimalist, high-performance GNU Emacs configuration forged in pure black (`#000000`) and blood red (`#FF0000`). Designed for systems programming, note-taking, and technical blogging with modal editing.
 
