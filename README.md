@@ -1,12 +1,14 @@
-# ⚔ Sycamore Emacs — The Black Swordsman Edition
-
-> *"Even if the morrow is barren of promises, nothing shall forestall my return."*
+# SycamoreQ's Emacs — The Black Swordsman Edition
 
 A minimalist, high-performance GNU Emacs configuration forged in pure black (`#000000`) and blood red (`#FF0000`). Designed for systems programming, note-taking, and technical blogging with modal editing.
 
+
+I thought since a lot of people do put up their Emacs config and they get blown up, why would I not want that lol. I am still learning Emacs and this is also a fun project to learn about it. 
+
+The rest is AI summarized. 
 ---
 
-## 🗡 Highlights
+## Highlights
 
 * **Package Management**: Automated bootstrap via [`straight.el`](https://github.com/radian-software/straight.el) and `use-package` for fully reproducible environments.
 * **Modal Editing**: Full Vim keybindings via `evil-mode` and `evil-collection`, with an extensible `SPC` leader key configured via `general.el`.
@@ -36,7 +38,7 @@ A minimalist, high-performance GNU Emacs configuration forged in pure black (`#0
 
 ---
 
-## ⌨ Keybindings (`SPC` Leader)
+## Keybindings (`SPC` Leader)
 
 Press `SPC` in normal mode (or `M-SPC` anywhere) to access the leader menu:
 
@@ -58,7 +60,7 @@ Press `SPC` in normal mode (or `M-SPC` anywhere) to access the leader menu:
 | `SPC m z` | `olivetti-mode` | Toggle centered distraction-free focus mode |
 | `SPC m n` | `berserk-new-blog-post` | Scaffold a new blog post |
 
-### 📂 Files & Buffers
+### Files & Buffers
 
 | Key | Command | Description |
 | :--- | :--- | :--- |
@@ -68,7 +70,7 @@ Press `SPC` in normal mode (or `M-SPC` anywhere) to access the leader menu:
 | `SPC f r` | `recentf-open-files` | Browse recent files |
 | `SPC b k` / `SPC k` | `kill-current-buffer` | Close active buffer |
 
-### 🪟 Windows & Navigation
+### Windows & Navigation
 
 | Key | Command | Description |
 | :--- | :--- | :--- |
