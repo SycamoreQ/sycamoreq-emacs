@@ -42,32 +42,41 @@
    `(line-number                ((t (:background ,bg :foreground ,red-dark))))
    `(line-number-current-line   ((t (:background ,bg-hl :foreground ,red :weight bold))))
 
-   ;; ── Font lock (syntax highlighting) ───────────────────────
-   ;; keywords: brightest red
-   `(font-lock-keyword-face          ((t (:foreground ,red :weight bold))))
-   ;; builtins: slightly dimmer red
-   `(font-lock-builtin-face          ((t (:foreground ,red-dim))))
-   ;; function names: white
-   `(font-lock-function-name-face    ((t (:foreground ,fg :weight bold))))
-   ;; variable names: white
-   `(font-lock-variable-name-face    ((t (:foreground ,fg))))
-   ;; types: red
-   `(font-lock-type-face             ((t (:foreground ,red))))
-   ;; strings: dark red
-   `(font-lock-string-face           ((t (:foreground ,red-dim))))
-   ;; constants: red
-   `(font-lock-constant-face         ((t (:foreground ,red))))
-   ;; comments: dim gray
-   `(font-lock-comment-face          ((t (:foreground ,fg-dim :slant italic))))
-   `(font-lock-comment-delimiter-face ((t (:foreground ,fg-dim))))
-   ;; doc strings
-   `(font-lock-doc-face              ((t (:foreground ,fg-dim :slant italic))))
-   ;; preprocessor
-   `(font-lock-preprocessor-face     ((t (:foreground ,red :weight bold))))
-   ;; warnings
-   `(font-lock-warning-face          ((t (:foreground ,red :weight bold :underline t))))
-   ;; negation
-   `(font-lock-negation-char-face    ((t (:foreground ,red :weight bold))))
+   ;; ── Font lock (VS Code Dark+ syntax palette) ───────────────
+   ;; Keywords: blue (#569CD6)
+   `(font-lock-keyword-face          ((t (:foreground "#569CD6" :weight bold))))
+   ;; Builtins & types: teal/mint (#4EC9B0)
+   `(font-lock-builtin-face          ((t (:foreground "#4EC9B0"))))
+   `(font-lock-type-face             ((t (:foreground "#4EC9B0" :weight bold))))
+   ;; Function definitions & calls: warm yellow (#DCDCAA)
+   `(font-lock-function-name-face    ((t (:foreground "#DCDCAA" :weight bold))))
+   ;; Variables & parameters: light sky blue (#9CDCFE)
+   `(font-lock-variable-name-face    ((t (:foreground "#9CDCFE"))))
+   `(font-lock-property-name-face    ((t (:foreground "#9CDCFE"))))
+   `(font-lock-property-use-face     ((t (:foreground "#9CDCFE"))))
+   ;; Constants, booleans & enums: bright cyan (#4FC1FF)
+   `(font-lock-constant-face         ((t (:foreground "#4FC1FF"))))
+   ;; Strings: warm terracotta orange (#CE9178)
+   `(font-lock-string-face           ((t (:foreground "#CE9178"))))
+   ;; Numbers: soft sage green (#B5CEA8)
+   `(font-lock-number-face           ((t (:foreground "#B5CEA8"))))
+   ;; Comments & docstrings: muted green (#6A9955)
+   `(font-lock-comment-face          ((t (:foreground "#6A9955" :slant italic))))
+   `(font-lock-comment-delimiter-face ((t (:foreground "#6A9955"))))
+   `(font-lock-doc-face              ((t (:foreground "#6A9955" :slant italic))))
+   ;; Preprocessor & macros: control purple (#C586C0)
+   `(font-lock-preprocessor-face     ((t (:foreground "#C586C0" :weight bold))))
+   ;; Operators & delimiters: light neutral gray (#D4D4D4)
+   `(font-lock-operator-face         ((t (:foreground "#D4D4D4"))))
+   `(font-lock-bracket-face          ((t (:foreground "#D4D4D4"))))
+   `(font-lock-delimiter-face        ((t (:foreground "#D4D4D4"))))
+   ;; Escape characters & regex: khaki amber (#D7BA7D)
+   `(font-lock-escape-face           ((t (:foreground "#D7BA7D"))))
+   `(font-lock-regexp-grouping-backslash ((t (:foreground "#D7BA7D"))))
+   `(font-lock-regexp-grouping-construct ((t (:foreground "#D7BA7D"))))
+   ;; Warnings & negation
+   `(font-lock-warning-face          ((t (:foreground "#F44747" :weight bold :underline t))))
+   `(font-lock-negation-char-face    ((t (:foreground "#569CD6" :weight bold))))
 
    ;; ── Mode line ─────────────────────────────────────────────
    `(mode-line           ((t (:background ,red :foreground ,bg
@@ -117,19 +126,19 @@
    `(markdown-header-face-4      ((t (:foreground ,fg-dim :weight bold))))
    `(markdown-header-face-5      ((t (:foreground ,red-dark))))
    `(markdown-header-face-6      ((t (:foreground ,fg-dim :slant italic))))
-   `(markdown-header-delimiter-face ((t (:foreground ,red-dark :weight bold))))
-   `(markdown-code-face          ((t (:background "#0D0D0D" :extend t))))
-   `(markdown-pre-face           ((t (:background "#0D0D0D" :extend t))))
-   `(markdown-inline-code-face   ((t (:background ,bg-hl :foreground ,red :weight bold))))
-   `(markdown-language-keyword-face ((t (:foreground ,red-dim :weight bold))))
-   `(markdown-language-info-face ((t (:foreground ,fg-dim :slant italic))))
+   `(markdown-code-face          ((t (:background "#141414" :foreground "#D4D4D4" :extend t))))
+   `(markdown-pre-face           ((t (:background "#141414" :foreground "#D4D4D4" :extend t))))
+   `(markdown-inline-code-face   ((t (:background "#1A1A1A" :foreground "#CE9178" :weight bold))))
+   `(markdown-language-keyword-face ((t (:foreground "#569CD6" :weight bold))))
+   `(markdown-language-info-face ((t (:foreground "#9CDCFE" :slant italic))))
    `(markdown-bold-face          ((t (:foreground ,fg :weight bold))))
    `(markdown-italic-face        ((t (:slant italic))))
    `(markdown-strike-through-face ((t (:strike-through t :foreground ,fg-dim))))
-   `(markdown-blockquote-face    ((t (:foreground ,fg-dim :slant italic))))
+   `(markdown-blockquote-face    ((t (:foreground "#6A9955" :slant italic))))
    `(markdown-list-face          ((t (:foreground ,red :weight bold))))
-   `(markdown-link-face          ((t (:foreground ,red :underline t))))
-   `(markdown-url-face           ((t (:foreground ,red-dark :underline t))))
+   `(markdown-link-face          ((t (:foreground "#4FC1FF" :underline t))))
+   `(markdown-url-face           ((t (:foreground "#569CD6" :underline t))))
+
    `(markdown-footnote-marker-face ((t (:foreground ,red-dim))))
    `(markdown-table-face         ((t (:foreground ,fg))))
    `(markdown-hr-face            ((t (:foreground ,red-dark :weight bold))))
