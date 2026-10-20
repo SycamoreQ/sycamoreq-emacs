@@ -1,0 +1,28 @@
+# Straight.el package manager (bootstraps on first run)
+straight/
+
+# Emacs cache and session files
+*~
+*.elc
+*.eln
+.#*
+auto-save-list/
+recentf
+history
+tramp
+eshell/
+eln-cache/
+var/
+transient/
+.cache/
+saveplace
+semanticdb
+projectile.cache
+*.swp
+
+# macOS
+.DS_Store
+
+# Foreign clones & scratch
+emacs/
+config/
