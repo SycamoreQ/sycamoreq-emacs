@@ -13,7 +13,7 @@
 ;; Two colors. No mercy. No gradients.
 ;; Black: #000000   Red: #FF0000
 ;;; ── Environment & PATH (macOS Homebrew support) ──────────────────────────────
-(dolist (dir '("/opt/homebrew/bin" "/opt/homebrew/sbin" "/usr/local/bin"))
+(dolist (dir '("/opt/homebrew/bin" "/opt/homebrew/sbin" "/usr/local/bin" "/Library/TeX/texbin"))
   (when (file-directory-p dir)
     (add-to-list 'exec-path dir)
     (setenv "PATH" (concat dir ":" (getenv "PATH")))))
@@ -124,6 +124,17 @@
     "  "
     ;; Major mode
     (:propertize "%m" face mode-line-berserk-mode)
+    "  "
+    ;; Clickable PDF button for Markdown buffers
+    (:eval (when (derived-mode-p 'markdown-mode)
+             (propertize "[PDF]"
+                         'face '(:foreground "#000000" :background "#FFFFFF" :weight bold)
+                         'mouse-face '(:background "#FF0000" :foreground "#000000")
+                         'help-echo "mouse-1: Convert Markdown to PDF"
+                         'local-map (let ((map (make-sparse-keymap)))
+                                      (define-key map [mode-line mouse-1] #'berserk-markdown-to-pdf)
+                                      (define-key map [mode-line down-mouse-1] #'ignore)
+                                      map))))
     ;; Right-pad
     " "))
 
@@ -208,6 +219,62 @@
   :after evil
   :config (evil-collection-init))
 
+(defun berserk-markdown-table-convert (begin end)
+  "Convert CSV or TSV region to a fully formed Markdown table with headers and separators."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (list (line-beginning-position) (line-end-position))))
+  (require 'markdown-mode)
+  (markdown-table-convert-region begin end)
+  (save-excursion
+    (goto-char (min begin end))
+    (let* ((line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+           (cols (max 1 (1- (length (split-string (string-trim line) "|"))))))
+      (forward-line 1)
+      (unless (markdown-table-hline-at-point-p)
+        (insert "|" (mapconcat (lambda (_) " --- |") (make-list cols nil) "") "\n")))
+    (markdown-table-align)))
+
+(defun berserk-markdown-to-pdf (&optional open-after)
+  "Convert the current Markdown file to PDF using pandoc and open it.
+If OPEN-AFTER is non-nil (default t), opens the PDF immediately in the OS viewer."
+  (interactive (list t))
+  (unless (derived-mode-p 'markdown-mode)
+    (user-error "Current buffer is not in markdown-mode"))
+  (when (buffer-modified-p)
+    (save-buffer))
+  (unless buffer-file-name
+    (user-error "Buffer has no associated file. Please save it first"))
+  (let* ((input-file buffer-file-name)
+         (output-file (concat (file-name-sans-extension input-file) ".pdf"))
+         (pandoc (or (executable-find "pandoc") "/opt/homebrew/bin/pandoc"))
+         (xelatex (or (executable-find "xelatex")
+                      "/Library/TeX/texbin/xelatex"
+                      (executable-find "pdflatex")
+                      "/Library/TeX/texbin/pdflatex"))
+         (args (append (list "-f" "gfm"
+                             input-file
+                             "-o" output-file
+                             "-V" "geometry:margin=1in"
+                             "-V" "colorlinks=true"
+                             "--highlight-style=tango")
+                       (when xelatex
+                         (list (concat "--pdf-engine=" xelatex))))))
+    (unless (file-executable-p pandoc)
+      (user-error "Pandoc executable not found"))
+    (message "⚔ Generating PDF from %s..." (file-name-nondirectory input-file))
+    (let ((exit-code (apply #'call-process pandoc nil "*Pandoc PDF Output*" nil args)))
+      (if (zerop exit-code)
+          (progn
+            (message "⚔ PDF created: %s" (file-name-nondirectory output-file))
+            (when open-after
+              (if (eq system-type 'darwin)
+                  (start-process "open-pdf" nil "open" output-file)
+                (browse-url-of-file output-file))))
+        (pop-to-buffer "*Pandoc PDF Output*")
+        (error "Failed to generate PDF. Check *Pandoc PDF Output* for details")))))
+
 ;;; ── General.el (keybindings with SPC leader) ─────────────────────────────────
 (use-package general
   :config
@@ -260,12 +327,14 @@
     "m s" '(berserk-blog-stats             :which-key "word/read stats")
     "m e" '(org-gfm-export-to-markdown     :which-key "org → gfm")
 
-    ;; Preview options
+    ;; Preview & Export options
+    "m P"   '(berserk-markdown-to-pdf      :which-key "export & open PDF")
     "m p"   '(:ignore t :which-key "⚔ preview")
     "m p p" '(markdown-preview-mode        :which-key "browser live preview")
     "m p e" '(markdown-live-preview-mode   :which-key "split eww live preview")
     "m p b" '(markdown-export-and-preview  :which-key "export & open browser")
     "m p g" '(grip-mode                    :which-key "grip live preview")
+    "m p d" '(berserk-markdown-to-pdf      :which-key "export & open PDF")
 
     ;; Code blocks
     "m c"   '(:ignore t :which-key "⚔ code blocks")
@@ -280,10 +349,21 @@
     "m i t" '(markdown-toc-generate-toc    :which-key "table of contents")
     "m i v" '(markdown-toggle-inline-images :which-key "toggle inline images")
 
+    ;; Tables
+    "m t"   '(:ignore t :which-key "⚔ tables")
+    "m t i" '(markdown-insert-table           :which-key "insert table wizard")
+    "m t c" '(berserk-markdown-table-convert  :which-key "convert CSV/text to table")
+    "m t a" '(markdown-table-align            :which-key "align / prettify")
+    "m t r" '(markdown-table-insert-row       :which-key "insert row")
+    "m t d" '(markdown-table-delete-row       :which-key "delete row")
+    "m t k" '(markdown-table-insert-column    :which-key "insert col")
+    "m t K" '(markdown-table-delete-column    :which-key "delete col")
+    "m t s" '(markdown-table-sort-lines       :which-key "sort rows")
+
     ;; Table of Contents
-    "m t"   '(:ignore t :which-key "⚔ toc")
-    "m t g" '(markdown-toc-generate-toc    :which-key "generate TOC")
-    "m t r" '(markdown-toc-refresh-toc     :which-key "refresh TOC")
+    "m T"   '(:ignore t :which-key "⚔ toc")
+    "m T g" '(markdown-toc-generate-toc    :which-key "generate TOC")
+    "m T r" '(markdown-toc-refresh-toc     :which-key "refresh TOC")
 
     ;; Git
     "g"   '(:ignore t :which-key "⚔ git")
@@ -431,7 +511,9 @@
                                       (executable-find "ispell"))
                               (flyspell-mode 1)))))
   :bind (:map markdown-mode-map
-         ("C-c '" . markdown-edit-code-block))
+         ("C-c '" . markdown-edit-code-block)
+         ("C-c C-e p" . berserk-markdown-to-pdf)
+         ("<f7>" . berserk-markdown-to-pdf))
   :config
   ;; Native font-locking / syntax highlighting for fenced code blocks
   (setq markdown-fontify-code-blocks-natively t
